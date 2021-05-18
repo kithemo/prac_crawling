@@ -1,0 +1,36 @@
+
+ # > div.prod_list_type.prod_best_type > ul
+
+#contentWrap > div.conWrap > div.con_t2 > form
+
+#contentWrap > div.conWrap > div.con_t2 > form > div.prod_list_type.prod_best_type > ul > li:nth-child(1) > div > span > span.rank_num
+
+#contentWrap > div.conWrap > div.con_t2 > form > div.prod_list_type.prod_best_type > ul > li:nth-child(1) > dl.prod_info > dd.txt_desc > strong 별점
+#contentWrap > div.conWrap > div.con_t2 > form > div.prod_list_type.prod_best_type > ul > li:nth-child(1) > dl.prod_info > dd.txt_bex 설명
+#contentWrap > div.conWrap > div.con_t2 > form > div.prod_list_type.prod_best_type > ul > li:nth-child(1) > dl.prod_info > dt > a 제목
+
+#contentWrap > div.conWrap > div.con_t2 > form > div.prod_list_type.prod_best_type > ul > li:nth-child(1) > div > div > a:nth-child(1) > img
+import requests
+from bs4 import BeautifulSoup
+
+headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+data = requests.get('http://www.bandinlunis.com/front/display/listBest.do',headers=headers)
+
+soup = BeautifulSoup(data.text, 'html.parser')
+
+books = soup.select('#contentWrap > div.conWrap > div.con_t2 > form')
+
+for best in books:
+    rank = best.select('dd.txt_desc > strong').text
+    # cover = best.select_one('img')
+    title = best.select('dl.prod_info > dt > a')
+    author = best.select('dd.txt_block')
+    story = best.select('dd.txt_bex')
+
+    print(rank, title, story, author)
+
+    #여기까지 아까는 체크됐음. 이미지 파일은 체크 하지 못해서 주석처리 해놓음.
+    # select_one 사용시 하나만 긁어와서 select로 교체함,
+    # -> 이렇게 되니 추가로 다른 정보들도 같이 긁어왔었음.
+
+#contentWrap > div.conWrap > div.con_t2 > form > div.prod_list_type.prod_best_type > ul > li:nth-child(1) > div > div > a:nth-child(1) > img
